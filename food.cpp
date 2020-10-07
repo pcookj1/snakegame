@@ -24,7 +24,7 @@
 #include "food.h"
 #include "gameconfig.h"
 
-Food::Food() : foodImgPath(":/imgs/apple-lanczos3.png") {
+Food::Food() : foodImgPath(":/imgs/imgs/apple-lanczos3.png") {
 
 }
 

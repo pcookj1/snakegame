@@ -57,7 +57,6 @@ SOURCES       = ../main.cpp \
 		../gamedialog.cpp qrc_resource.cpp \
 		moc_game.cpp \
 		moc_snake.cpp \
-		moc_food.cpp \
 		moc_gamedialog.cpp
 OBJECTS       = main.o \
 		game.o \
@@ -67,7 +66,6 @@ OBJECTS       = main.o \
 		qrc_resource.o \
 		moc_game.o \
 		moc_snake.o \
-		moc_food.o \
 		moc_gamedialog.o
 DIST          = /opt/Qt5.12.0/5.12.0/gcc_64/mkspecs/features/spec_pre.prf \
 		/opt/Qt5.12.0/5.12.0/gcc_64/mkspecs/common/unix.conf \
@@ -666,9 +664,9 @@ qrc_resource.cpp: ../resource.qrc \
 		/opt/Qt5.12.0/5.12.0/gcc_64/bin/rcc \
 		../GameStop.qml \
 		../GameStopForm.ui.qml \
-		../apple_crunch.wav \
-		../apple.png \
-		../apple-lanczos3.png
+		../sounds/apple_crunch.wav \
+		../imgs/apple.png \
+		../imgs/apple-lanczos3.png
 	/opt/Qt5.12.0/5.12.0/gcc_64/bin/rcc -name resource ../resource.qrc -o qrc_resource.cpp
 
 compiler_moc_predefs_make_all: moc_predefs.h
@@ -677,9 +675,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /opt/Qt5.12.0/5.12.0/gcc_64/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -Wall -W -dM -E -o moc_predefs.h /opt/Qt5.12.0/5.12.0/gcc_64/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_game.cpp moc_snake.cpp moc_food.cpp moc_gamedialog.cpp
+compiler_moc_header_make_all: moc_game.cpp moc_snake.cpp moc_gamedialog.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_game.cpp moc_snake.cpp moc_food.cpp moc_gamedialog.cpp
+	-$(DEL_FILE) moc_game.cpp moc_snake.cpp moc_gamedialog.cpp
 moc_game.cpp: /opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QGraphicsScene \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qgraphicsscene.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
@@ -818,6 +816,10 @@ moc_game.cpp: /opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QGraphicsScene \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QGraphicsRectItem \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qgraphicsitem.h \
 		../gameconfig.h \
+		../gamedialog.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QDialog \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qdialog.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QWidget \
 		../snake.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QGraphicsItemGroup \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/QList \
@@ -931,8 +933,9 @@ moc_snake.cpp: /opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QGraphicsItemGroup 
 		/opt/Qt5.12.0/5.12.0/gcc_64/bin/moc
 	/opt/Qt5.12.0/5.12.0/gcc_64/bin/moc $(DEFINES) --include /home/pcook/code_practice/qtapps/snakegame/build_files/moc_predefs.h -I/opt/Qt5.12.0/5.12.0/gcc_64/mkspecs/linux-g++ -I/home/pcook/code_practice/qtapps/snakegame -I/opt/Qt5.12.0/5.12.0/gcc_64/include -I/opt/Qt5.12.0/5.12.0/gcc_64/include/QtMultimedia -I/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets -I/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui -I/opt/Qt5.12.0/5.12.0/gcc_64/include/QtNetwork -I/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../snake.h -o moc_snake.cpp
 
-moc_food.cpp: /opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/QImage \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qimage.h \
+moc_gamedialog.cpp: /opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QDialog \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qdialog.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qtguiglobal.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qglobal.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qconfig-bootstrapped.h \
@@ -956,103 +959,8 @@ moc_food.cpp: /opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/QImage \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qnumeric.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qversiontagging.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qtgui-config.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qcolor.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qrgb.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qnamespace.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qstringlist.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qlist.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qalgorithms.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qiterator.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qrefcount.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qarraydata.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qhashfunctions.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qstring.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qchar.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qbytearray.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qstringliteral.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qstringalgorithms.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qstringview.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qstringbuilder.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qpair.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qbytearraylist.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qregexp.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qstringmatcher.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qrgba64.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qpaintdevice.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qwindowdefs.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qobjectdefs.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qobjectdefs_impl.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qwindowdefs_win.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qrect.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qmargins.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qsize.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qpoint.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qpixelformat.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qtransform.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qmatrix.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qpolygon.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qvector.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qregion.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qdatastream.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qscopedpointer.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qiodevice.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qobject.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qcoreevent.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qmetatype.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qvarlengtharray.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qcontainerfwd.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qobject_impl.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qline.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qpainterpath.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QGraphicsRectItem \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qgraphicsitem.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qtwidgets-config.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qvariant.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qmap.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qdebug.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qhash.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qtextstream.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qlocale.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qshareddata.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qset.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qcontiguouscache.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qsharedpointer.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qsharedpointer_impl.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qpixmap.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/QObject \
-		../food.h \
-		moc_predefs.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/bin/moc
-	/opt/Qt5.12.0/5.12.0/gcc_64/bin/moc $(DEFINES) --include /home/pcook/code_practice/qtapps/snakegame/build_files/moc_predefs.h -I/opt/Qt5.12.0/5.12.0/gcc_64/mkspecs/linux-g++ -I/home/pcook/code_practice/qtapps/snakegame -I/opt/Qt5.12.0/5.12.0/gcc_64/include -I/opt/Qt5.12.0/5.12.0/gcc_64/include/QtMultimedia -I/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets -I/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui -I/opt/Qt5.12.0/5.12.0/gcc_64/include/QtNetwork -I/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../food.h -o moc_food.cpp
-
-moc_gamedialog.cpp: /opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QWidget \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qwidget.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qtguiglobal.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qglobal.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qconfig-bootstrapped.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qconfig.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qtcore-config.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qsystemdetection.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qprocessordetection.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qcompilerdetection.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qtypeinfo.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qsysinfo.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qlogging.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qflags.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qatomic.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qbasicatomic.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qatomic_bootstrap.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qgenericatomic.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qatomic_cxx11.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qatomic_msvc.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qglobalstatic.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qmutex.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qnumeric.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qversiontagging.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qtgui-config.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qtwidgets-config.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qwindowdefs.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qobjectdefs.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qnamespace.h \
@@ -1129,6 +1037,7 @@ moc_gamedialog.cpp: /opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QWidget \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qfiledevice.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qvector2d.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qtouchdevice.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QWidget \
 		../gamedialog.h \
 		moc_predefs.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/bin/moc
@@ -1305,15 +1214,19 @@ main.o: ../main.cpp /opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QApplication \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QGraphicsRectItem \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qgraphicsitem.h \
 		../gameconfig.h \
+		../gamedialog.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QDialog \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qdialog.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QWidget \
 		../snake.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QGraphicsItemGroup \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/QList
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../main.cpp
 
-game.o: ../game.cpp /opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QGraphicsScene \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qgraphicsscene.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qtguiglobal.h \
+game.o: ../game.cpp /opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/QFile \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qfile.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qfiledevice.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qiodevice.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qglobal.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qconfig-bootstrapped.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qconfig.h \
@@ -1335,8 +1248,6 @@ game.o: ../game.cpp /opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QGraphicsScene
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qmutex.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qnumeric.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qversiontagging.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qtgui-config.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qtwidgets-config.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qobject.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qobjectdefs.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qnamespace.h \
@@ -1365,6 +1276,12 @@ game.o: ../game.cpp /opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QGraphicsScene
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qvarlengtharray.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qcontainerfwd.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qobject_impl.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QGraphicsScene \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qgraphicsscene.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qtguiglobal.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qtgui-config.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qtwidgets-config.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qpoint.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qrect.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qmargins.h \
@@ -1380,7 +1297,6 @@ game.o: ../game.cpp /opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QGraphicsScene
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qwindowdefs.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qwindowdefs_win.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qdatastream.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qiodevice.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qline.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qtransform.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qpainterpath.h \
@@ -1406,8 +1322,6 @@ game.o: ../game.cpp /opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QGraphicsScene
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qcontiguouscache.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qurl.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qurlquery.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qfile.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qfiledevice.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qvector2d.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qtouchdevice.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/QLineF \
@@ -1418,6 +1332,7 @@ game.o: ../game.cpp /opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QGraphicsScene
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtMultimedia/qsound.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtMultimedia/qtmultimediaglobal.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtMultimedia/qtmultimedia-config.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/QTextStream \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/QTimer \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qtimer.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qbasictimer.h \
@@ -1456,6 +1371,9 @@ game.o: ../game.cpp /opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QGraphicsScene
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtMultimedia/qaudio.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtNetwork/qnetworkconfiguration.h \
 		../gameconfig.h \
+		../gamedialog.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QDialog \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qdialog.h \
 		../snake.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QGraphicsItemGroup \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/QList \
@@ -1731,8 +1649,8 @@ food.o: ../food.cpp /opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/QBrush \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o food.o ../food.cpp
 
 gamedialog.o: ../gamedialog.cpp ../gamedialog.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QWidget \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qwidget.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QDialog \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qdialog.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qtguiglobal.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qglobal.h \
@@ -1758,6 +1676,7 @@ gamedialog.o: ../gamedialog.cpp ../gamedialog.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qversiontagging.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qtgui-config.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qtwidgets-config.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qwidget.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qwindowdefs.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qobjectdefs.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qnamespace.h \
@@ -1833,7 +1752,34 @@ gamedialog.o: ../gamedialog.cpp ../gamedialog.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qfile.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qfiledevice.h \
 		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qvector2d.h \
-		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qtouchdevice.h
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qtouchdevice.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QWidget \
+		ui_gamedialog.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/QVariant \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QApplication \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qapplication.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qcoreapplication.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/qeventloop.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qguiapplication.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qinputmethod.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QHBoxLayout \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qboxlayout.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qlayout.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qgridlayout.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QLabel \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qlabel.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qframe.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QPushButton \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qpushbutton.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtGui/qicon.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QSpacerItem \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QStackedWidget \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/qstackedwidget.h \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtWidgets/QVBoxLayout \
+		/opt/Qt5.12.0/5.12.0/gcc_64/include/QtCore/QString
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gamedialog.o ../gamedialog.cpp
 
 qrc_resource.o: qrc_resource.cpp 
@@ -1844,9 +1790,6 @@ moc_game.o: moc_game.cpp
 
 moc_snake.o: moc_snake.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_snake.o moc_snake.cpp
-
-moc_food.o: moc_food.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_food.o moc_food.cpp
 
 moc_gamedialog.o: moc_gamedialog.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_gamedialog.o moc_gamedialog.cpp

@@ -60,7 +60,7 @@ Game::Game(QWidget *parent) :
     scene->setBackgroundBrush(QBrush(QColor(247, 247, 188))); // beige background
     ui->graphicsView->setScene(scene);
 
-    player->setMedia(QUrl("qrc:/sounds/apple_crunch.wav"));
+    player->setMedia(QUrl("qrc:/sounds/sounds/apple_crunch.wav"));
 
     QLineF TopLine(scene->sceneRect().topLeft(), scene->sceneRect().topRight());
     QLineF LeftLine(scene->sceneRect().topLeft(), scene->sceneRect().bottomLeft());
