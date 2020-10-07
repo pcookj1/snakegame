@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/imgs">
+        <file>apple.png</file>
+        <file>apple-lanczos3.png</file>
+    </qresource>
+    <qresource prefix="/sounds">
+        <file>apple_crunch.wav</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>GameStop.qml</file>
+        <file>GameStopForm.ui.qml</file>
+    </qresource>
+</RCC>
